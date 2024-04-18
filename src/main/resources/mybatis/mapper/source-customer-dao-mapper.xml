@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="factory.integration.database.mapper.source.SourceCustomersDaoMapper">
+    <select id="selectCustomerById" parameterType="java.lang.Long" resultType="CustomerDto">
+        SELECT *
+        FROM customers
+        WHERE id = #{value}
+    </select>
+    <resultMap id="CustomerDtoMap" type="CustomerDto">
+    </resultMap>
+    <select id="selectAll" resultMap="CustomerDtoMap">
+        SELECT *
+        FROM customers
+    </select>
+    <insert id="insertCustomer" parameterType="CustomerDto">
+        INSERT INTO customers (name)
+        VALUES (#{name})
+    </insert>
+    <delete id="deleteCustomerById" parameterType="java.lang.Long">
+        DELETE FROM customers
+        WHERE id = #{id}
+    </delete>
+</mapper>
