@@ -10,7 +10,7 @@ datasource.source, datasource.target, datasource.quartz는 각각 source RDB, ta
 ```yaml
 spring:
   quartz:
-    job-store-type: jdbc
+    job-store-type: memory
     properties:
       org:
         quartz:

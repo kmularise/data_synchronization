@@ -28,9 +28,4 @@ public class QuartzDatabaseConfiguration {
 	public DataSource quartzDataSource() {
 		return new HikariDataSource(quartzHikariConfig());
 	}
-
-	@Bean
-	public SchedulerFactoryBeanCustomizer schedulerFactoryBeanCustomizer() {
-		return schedulerFactoryBean -> schedulerFactoryBean.setDataSource(quartzDataSource());
-	}
 }
