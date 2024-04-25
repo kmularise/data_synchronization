@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="factory.integration.database.synchronizer.mapper.scheduler.SchedulerDaoMapper">
+    <resultMap id="SchedulerDtoMap" type="SchedulerDto">
+        <result property="excludedColumns" column="excluded_columns"
+                typeHandler="factory.integration.database.synchronizer.mapper.scheduler.ColumnsTypeHandler"/>
+    </resultMap>
+    <select id="selectAll" resultMap="SchedulerDtoMap">
+        SELECT *
+        FROM SYNC_TASK
+    </select>
+</mapper>
