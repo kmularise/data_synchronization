@@ -9,6 +9,6 @@
         <setting name="jdbcTypeForNull" value="NULL" />
     </settings>
     <typeAliases>
-        <typeAlias alias="CustomerDto" type="factory.integration.database.mapper.CustomerDto"/>
+        <typeAlias alias="CustomerDto" type="factory.integration.database.synchronizer.mapper.CustomerDto"/>
     </typeAliases>
 </configuration>

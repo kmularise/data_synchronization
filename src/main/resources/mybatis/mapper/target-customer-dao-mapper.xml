@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="factory.integration.database.mapper.target.TargetCustomersDaoMapper">
+<mapper namespace="factory.integration.database.synchronizer.mapper.target.TargetCustomersDaoMapper">
     <select id="selectCustomerById" parameterType="java.lang.Long" resultType="CustomerDto">
         SELECT *
         FROM customers
