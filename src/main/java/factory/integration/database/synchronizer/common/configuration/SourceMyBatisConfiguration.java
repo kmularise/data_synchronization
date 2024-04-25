@@ -4,18 +4,19 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
-@MapperScan(basePackages = "factory.integration.database.mapper.source")
+@MapperScan(basePackages = "factory.integration.database.synchronizer.mapper.source",
+sqlSessionFactoryRef = "sourceSqlSessionFactory")
 public class SourceMyBatisConfiguration {
-	@Primary
+
 	@Bean
 	public SqlSessionFactory sourceSqlSessionFactory(
 		@Qualifier("sourceDataSource")DataSource sourceDataSource, ApplicationContext applicationContext) throws Exception {
@@ -25,5 +26,8 @@ public class SourceMyBatisConfiguration {
 		sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:mybatis/mapper/**/*.xml"));
 		return sqlSessionFactoryBean.getObject();
 	}
-
+	@Bean
+	public DataSourceTransactionManager sourceTransactionManager(@Qualifier("sourceDataSource") DataSource sourceDataSource) {
+		return new DataSourceTransactionManager(sourceDataSource);
+	}
 }

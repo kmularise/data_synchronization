@@ -8,9 +8,9 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import factory.integration.database.mapper.CustomerDto;
-import factory.integration.database.mapper.source.SourceCustomersDaoMapper;
-import factory.integration.database.mapper.target.TargetCustomersDaoMapper;
+import factory.integration.database.synchronizer.mapper.CustomerDto;
+import factory.integration.database.synchronizer.mapper.source.SourceCustomersDaoMapper;
+import factory.integration.database.synchronizer.mapper.target.TargetCustomersDaoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +26,9 @@ public class SynchronizationJob implements Job {
 		List<CustomerDto> targetCustomerDtos = targetCustomersDaoMapper.selectAll();
 		Set<CustomerDto> sourceSet = new HashSet<>(sourceCustomerDtos);
 		Set<CustomerDto> targetSet = new HashSet<>(targetCustomerDtos);
-		insertMissingEntries(sourceSet, targetSet);
-		deleteEntriesNotInSource(sourceSet, targetSet);
-		updateChangedEntries(sourceSet, targetSet);
+		// insertMissingEntries(sourceSet, targetSet);
+		// deleteEntriesNotInSource(sourceSet, targetSet);
+		// updateChangedEntries(sourceSet, targetSet);
 	}
 
 	private void insertMissingEntries(Set<CustomerDto> sourceSet, Set<CustomerDto> targetSet) {

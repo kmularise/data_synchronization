@@ -10,16 +10,15 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-public class SourceDatabaseConfiguration {
-
+public class SchedulerDatabaseConfiguration {
 	@Bean
-	@ConfigurationProperties(prefix = "spring.datasource.source")
-	public HikariConfig sourceHikariConfig() {
+	@ConfigurationProperties(prefix = "spring.datasource.quartz")
+	public HikariConfig schedulerHikariConfig() {
 		return new HikariConfig();
 	}
 
 	@Bean
-	public DataSource sourceDataSource() {
-		return new HikariDataSource(sourceHikariConfig());
+	public DataSource schedulerDataSource() {
+		return new HikariDataSource(schedulerHikariConfig());
 	}
 }
