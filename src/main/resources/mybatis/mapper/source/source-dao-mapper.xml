@@ -16,15 +16,15 @@
     </select>
     <select id="selectAllFromCustomers" resultMap="CustomerDtoMap">
         SELECT *
-        FROM customers
+        FROM customers FOR UPDATE
     </select>
     <select id="selectAllFromOrders" resultMap="OrderDtoMap">
         SELECT *
-        FROM orders
+        FROM orders FOR UPDATE
     </select>
     <select id="selectAllFromCars" resultMap="CarDtoMap">
         SELECT *
-        FROM cars
+        FROM cars FOR UPDATE
     </select>
     <select id="selectByIdRangeFromTable" resultType="map">
         SELECT *
