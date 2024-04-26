@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="factory.integration.database.synchronizer.mapper.source.SourceDaoMapper">
+    <resultMap id="CustomerDtoMap" type="CustomerDto">
+    </resultMap>
+    <resultMap id="OrderDtoMap" type="OrderDto">
+    </resultMap>
+    <resultMap id="CarDtoMap" type="CarDto">
+    </resultMap>
+    <select id="selectAllFromTable" resultType="map">
+        SELECT *
+        FROM ${tableName}
+    </select>
+    <select id="selectAllFromCustomers" resultMap="CustomerDtoMap">
+        SELECT *
+        FROM customers FOR UPDATE
+    </select>
+    <select id="selectAllFromOrders" resultMap="OrderDtoMap">
+        SELECT *
+        FROM orders FOR UPDATE
+    </select>
+    <select id="selectAllFromCars" resultMap="CarDtoMap">
+        SELECT *
+        FROM cars FOR UPDATE
+    </select>
+    <select id="selectByIdRangeFromTable" resultType="map">
+        SELECT *
+        FROM ${tableName}
+        WHERE id BETWEEN #{startId} AND #{endId}
+    </select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="factory.integration.database.synchronizer.mapper.source.SourceCustomersDaoMapper">
+    <select id="selectCustomerById" parameterType="java.lang.Long" resultType="CustomerDto">
+        SELECT *
+        FROM customers
+        WHERE id = #{value}
+    </select>
+    <resultMap id="CustomerDtoMap" type="CustomerDto">
+    </resultMap>
+    <select id="selectAll" resultMap="CustomerDtoMap">
+        SELECT *
+        FROM customers
+    </select>
+    <select id="selectByIdRange" resultMap="CustomerDtoMap" resultType="CustomerDto">
+        SELECT *
+        FROM customers
+        WHERE id BETWEEN #{startId} AND #{endId}
+    </select>
+    <insert id="insertCustomer" parameterType="CustomerDto">
+        INSERT INTO customers (name)
+        VALUES (#{name})
+    </insert>
+    <delete id="deleteCustomerById" parameterType="java.lang.Long">
+        DELETE FROM customers
+        WHERE id = #{id}
+    </delete>
+    <update id="updateCustomerById" parameterType="CustomerDto">
+        UPDATE customers
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+</mapper>

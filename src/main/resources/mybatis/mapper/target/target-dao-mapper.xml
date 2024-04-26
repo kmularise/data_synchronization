@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="factory.integration.database.synchronizer.mapper.target.TargetDaoMapper">
+    <insert id="insertTemporaryCustomers" parameterType="CustomerDto">
+        insert into IF_customers(id, name)
+        values
+        <foreach collection="customers" index="index" item="customer" separator=",">
+            (
+            #{customer.id},
+            #{customer.name}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertTemporaryCars" parameterType="CarDto">
+        insert into IF_cars(id, name, price)
+        values
+        <foreach collection="cars" index="index" item="car" separator=",">
+            (
+            #{car.id},
+            #{car.name},
+            #{car.price}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertTemporaryOrders" parameterType="OrderDto">
+        insert into IF_orders(id, count, car_id, customer_id)
+        values
+        <foreach collection="orders" index="index" item="order" separator=",">
+            (
+            #{order.id},
+            #{order.count}
+            #{order.car_id},
+            #{order.customer_id}
+            )
+        </foreach>
+    </insert>
+    <delete id="deleteCarsNotInTemporaryCars">
+        DELETE
+        FROM cars
+        WHERE id NOT IN (SELECT id FROM IF_cars)
+    </delete>
+    <insert id="insertCarsFromTemporaryCars">
+        INSERT INTO cars (id, name, price)
+        SELECT id, name, price
+        FROM IF_cars
+        WHERE NOT EXISTS (SELECT 1 FROM cars WHERE cars.id = IF_cars.id)
+    </insert>
+    <delete id="deleteOrdersNotInTemporaryOrders">
+        DELETE
+        FROM orders
+        WHERE id NOT IN (SELECT id FROM IF_orders)
+    </delete>
+    <insert id="insertOrdersFromTemporaryOrders">
+        INSERT INTO orders (id, count, car_id, customer_id)
+        SELECT id, count, car_id, customer_id
+        FROM IF_orders
+        WHERE NOT EXISTS (SELECT 1 FROM orders WHERE orders.id = IF_orders.id)
+    </insert>
+    <delete id="deleteCustomersNotInTemporaryCustomers">
+        DELETE
+        FROM customers
+        WHERE id NOT IN (SELECT id FROM IF_customers)
+    </delete>
+    <insert id="insertCustomersNotInTemporaryCustomers">
+        INSERT INTO customers (id, name)
+        SELECT id, name
+        FROM IF_customers
+        WHERE NOT EXISTS (SELECT 1 FROM customers WHERE customers.id = IF_customers.id)
+    </insert>
+    <update id="updateCarsFromTemporaryCars">
+        UPDATE cars
+            JOIN IF_cars
+        ON cars.id = IF_cars.id
+            SET
+                cars.name = IF_cars.name, cars.price = IF_cars.price
+        WHERE
+            cars.name != IF_cars.name
+           OR
+            cars.price != IF_cars.price
+    </update>
+    <update id="updateCustomersFromTemporaryCustomers">
+        UPDATE customers
+            JOIN IF_customers
+        ON customers.id = IF_customers.id
+            SET customers.name = IF_customers.name
+        WHERE customers.name != IF_customers.name
+    </update>
+    <update id="updateOrdersFromTemporaryOrders">
+        UPDATE orders
+            JOIN IF_orders
+        ON orders.id = IF_orders.id
+            SET
+                orders.count = IF_orders.count, orders.car_id = IF_orders.car_id, orders.customer_id = IF_orders.customer_id
+        WHERE
+            orders.count != IF_orders.count
+           OR
+            orders.car_id != IF_orders.car_id
+           OR
+            orders.customer_id != IF_orders.customer_id
+    </update>
+    <delete id="deleteAllTemporaryCars">
+        DELETE
+        FROM IF_cars
+    </delete>
+    <delete id="deleteAllTemporaryOrders">
+        DELETE
+        FROM IF_orders
+    </delete>
+    <delete id="deleteAllTemporaryCustomers">
+        DELETE
+        FROM IF_customers
+    </delete>
+</mapper>
