@@ -31,6 +31,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.2.5'
 
     //transaction
     implementation 'com.atomikos:transactions-spring-boot3-starter:6.0.0'

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>source 스키마에서 테이블을 선택하세요.</title>
+</head>
+<body>
+<h1>Select a Table</h1>
+<form th:action="@{/table/target}" method="get">
+    <select name="tableName">
+        <option th:each="tableName : ${tableNames}"
+                th:value="${tableName}"
+                th:text="${tableName}"></option>
+    </select>
+    <button type="submit">Select</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Scheduler Management</title>
+</head>
+<body>
+<h1>Scheduler Management</h1>
+
+<h2>Add New Scheduler</h2>
+<form th:action="@{/task/insert}" method="post">
+    <!-- 필드 작성 -->
+    <input type="text" name="jobName" placeholder="Job Name"/>
+    <input type="number" name="periodMinutes" placeholder="Period Minutes"/>
+    <input type="text" name="tableName" placeholder="Table Name"/>
+    <input type="checkbox" name="isActive"/> Active
+    <input type="checkbox" name="insert flag"/> Insert
+    <input type="checkbox" name="update flag"/> Update
+    <input type="checkbox" name="delete flag"/> Delete
+    <button type="submit">Add</button>
+</form>
+
+<h2>Schedulers List</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Job Name</th>
+        <th>Period</th>
+        <th>Table Name</th>
+        <th>Active</th>
+        <th>Inserted</th>
+        <th>Updated</th>
+        <th>Deleted</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="scheduler : ${schedulers}">
+        <form th:action="@{/task/update}" method="post">
+            <td th:text="${scheduler.id}"><input type="hidden" th:name="id" th:value="${scheduler.id}"/></td>
+            <td><input type="text" th:name="jobName" th:value="${scheduler.jobName}"/></td>
+            <td><input type="number" th:name="periodMinutes" th:value="${scheduler.periodMinutes}"/></td>
+            <td><input type="text" th:name="tableName" th:value="${scheduler.tableName}"/></td>
+            <td><input type="checkbox" th:name="isActive" th:checked="${scheduler.isActive}"/></td>
+            <td><input type="checkbox" th:name="hasInserted" th:checked="${scheduler.insertFlag}"/></td>
+            <td><input type="checkbox" th:name="hasUpdated" th:checked="${scheduler.updateFlag}"/></td>
+            <td><input type="checkbox" th:name="hasDeleted" th:checked="${scheduler.deleteFlag}"/></td>
+            <td>
+                <button type="submit">Update</button>
+            </td>
+        </form>
+        <td>
+            <form th:action="@{/task/delete}" method="post">
+                <input type="hidden" th:name="id" th:value="${scheduler.id}"/>
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

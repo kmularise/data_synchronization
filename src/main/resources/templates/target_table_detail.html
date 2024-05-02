@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>source 테이블 데이터 작업 UI</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h2>테이블 데이터 조회</h2>
+<table>
+    <thead>
+    <tr>
+        <th th:each="col : ${columns}" th:text="${col}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row : ${data}">
+        <td th:each="col : ${columns}" th:text="${row[col.toLowerCase().replaceAll(' ', '')]}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
