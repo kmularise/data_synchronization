@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="factory.integration.database.synchronizer.mapper.scheduler.SchedulerDaoMapper">
+<mapper namespace="factory.integration.database.synchronizer.mapper.scheduler.SyncTaskDaoMapper">
     <resultMap id="SchedulerDtoMap" type="SchedulerDto">
         <result property="excludedColumns" column="excluded_columns"
                 typeHandler="factory.integration.database.synchronizer.mapper.scheduler.ColumnsTypeHandler"/>

@@ -12,8 +12,8 @@
         <typeAlias alias="CustomerDto" type="factory.integration.database.synchronizer.mapper.CustomerDto"/>
         <typeAlias alias="CarDto" type="factory.integration.database.synchronizer.mapper.CarDto"/>
         <typeAlias alias="OrderDto" type="factory.integration.database.synchronizer.mapper.OrderDto"/>
-        <typeAlias alias="SchedulerDto" type="factory.integration.database.synchronizer.mapper.scheduler.SchedulerDto"/>
-        <typeAlias alias="TaskDto" type="factory.integration.database.synchronizer.mapper.scheduler.TaskDto"/>
+        <typeAlias alias="SchedulerDto" type="factory.integration.database.synchronizer.mapper.scheduler.TaskInfoDto"/>
+        <typeAlias alias="TaskDto" type="factory.integration.database.synchronizer.mapper.scheduler.TaskLogDto"/>
     </typeAliases>
     <typeHandlers>
         <typeHandler handler="factory.integration.database.synchronizer.mapper.scheduler.ColumnsTypeHandler"

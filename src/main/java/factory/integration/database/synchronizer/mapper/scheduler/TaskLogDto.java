@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
-public class TaskDto {
+public class TaskLogDto {
 	private Long id;
 	private Long syncTaskId;
 
@@ -18,7 +18,7 @@ public class TaskDto {
 
 	private Status status;
 
-	public TaskDto(Long syncTaskId, LocalDateTime startTime, LocalDateTime endTime, Status status) {
+	public TaskLogDto(Long syncTaskId, LocalDateTime startTime, LocalDateTime endTime, Status status) {
 		this.syncTaskId = syncTaskId;
 		this.startTime = startTime;
 		this.endTime = endTime;

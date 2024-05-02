@@ -5,9 +5,9 @@ CREATE TABLE `SYNC_TASK`
     `period_minutes`   INT          NOT NULL,
     `table_name`       VARCHAR(50)  NOT NULL,
     `is_active`        TINYINT(1)   NOT NULL,
-    `has_inserted`     TINYINT(1)   NOT NULL,
-    `has_deleted`      TINYINT(1)   NOT NULL,
-    `has_updated`      TINYINT(1)   NOT NULL,
+    `insert_flag`     TINYINT(1)   NOT NULL,
+    `delete_flag`      TINYINT(1)   NOT NULL,
+    `update_flag`      TINYINT(1)   NOT NULL,
     `excluded_columns` JSON         NOT NULL
 );
 

@@ -5,6 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface SchedulerDaoMapper {
-	List<SchedulerDto> selectAll();
+public interface SyncTaskDaoMapper {
+	List<TaskInfoDto> selectAll();
 }
