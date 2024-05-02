@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 public class SyncTableInfo {
 	private String tableName;
-	private Boolean hasInserted;
-	private Boolean hasDeleted;
-	private Boolean hasUpdated;
+	private Boolean insertFlag;
+	private Boolean deleteFlag;
+	private Boolean updateFlag;
 	private List<String> excludedColumns;
 }

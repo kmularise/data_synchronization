@@ -8,7 +8,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import factory.integration.database.synchronizer.mapper.scheduler.Status;
-import factory.integration.database.synchronizer.mapper.scheduler.TaskDto;
+import factory.integration.database.synchronizer.mapper.scheduler.TaskLogDto;
 import factory.integration.database.synchronizer.service.LogService;
 import factory.integration.database.synchronizer.service.SyncService;
 import lombok.RequiredArgsConstructor;
@@ -45,12 +45,12 @@ public class SyncJob implements Job {
 		try {
 			syncService.synchronize(syncTableInfo);
 			LocalDateTime endDateTime = LocalDateTime.now();
-			TaskDto taskDto = new TaskDto(jobId, startDateTime, endDateTime, Status.SUCCESS);
-			logService.createSuccess(taskDto);
+			TaskLogDto taskLogDto = new TaskLogDto(jobId, startDateTime, endDateTime, Status.SUCCESS);
+			logService.createSuccess(taskLogDto);
 		} catch (Exception exception) {
 			LocalDateTime endDateTime = LocalDateTime.now();
-			TaskDto taskDto = new TaskDto(jobId, startDateTime, endDateTime, Status.FAILURE);
-			logService.createFailure(taskDto);
+			TaskLogDto taskLogDto = new TaskLogDto(jobId, startDateTime, endDateTime, Status.FAILURE);
+			logService.createFailure(taskLogDto);
 		}
 	}
 }
