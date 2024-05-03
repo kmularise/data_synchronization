@@ -47,9 +47,9 @@ public class SchedulerExecutionService {
 		jobDataMap.put(SyncJob.TABLE_NAME, taskInfoDto.getTableName());
 		jobDataMap.put(SyncJob.JOB_ID, taskInfoDto.getId());
 		jobDataMap.put(SyncJob.EXCLUDED_COLUMNS, taskInfoDto.getExcludedColumns());
-		jobDataMap.put(SyncJob.HAS_UPDATED, taskInfoDto.getUpdateFlag());
-		jobDataMap.put(SyncJob.HAS_DELETED, taskInfoDto.getDeleteFlag());
-		jobDataMap.put(SyncJob.HAS_INSERTED, taskInfoDto.getInsertFlag());
+		jobDataMap.put(SyncJob.UPDATE_FLAG, taskInfoDto.getUpdateFlag());
+		jobDataMap.put(SyncJob.DELETE_FLAG, taskInfoDto.getDeleteFlag());
+		jobDataMap.put(SyncJob.INSERT_FLAG, taskInfoDto.getInsertFlag());
 		return JobBuilder.newJob(SyncJob.class)
 			.usingJobData(jobDataMap)
 			.build();

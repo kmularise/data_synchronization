@@ -20,10 +20,10 @@ public class SyncJob implements Job {
 	public static final String TABLE_NAME = "table_name";
 	public static final String EXCLUDED_COLUMNS = "excluded_columns";
 	public static final String JOB_ID = "sync_task_id";
-	public static final String HAS_INSERTED = "has_inserted";
-	public static final String HAS_UPDATED = "has_updated";
+	public static final String INSERT_FLAG = "has_inserted";
+	public static final String UPDATE_FLAG = "has_updated";
 
-	public static final String HAS_DELETED = "has_deleted";
+	public static final String DELETE_FLAG = "has_deleted";
 
 	private final SyncService syncService;
 	private final LogService logService;
@@ -33,9 +33,9 @@ public class SyncJob implements Job {
 		JobDataMap dataMap = context.getMergedJobDataMap();
 		String tableName = dataMap.getString(TABLE_NAME);
 		Long jobId = dataMap.getLong(JOB_ID);
-		boolean hasInserted = dataMap.getBoolean(HAS_INSERTED);
-		boolean hasDeleted = dataMap.getBoolean(HAS_DELETED);
-		boolean hasUpdated = dataMap.getBoolean(HAS_UPDATED);
+		boolean hasInserted = dataMap.getBoolean(INSERT_FLAG);
+		boolean hasDeleted = dataMap.getBoolean(DELETE_FLAG);
+		boolean hasUpdated = dataMap.getBoolean(UPDATE_FLAG);
 		//작업을 생성하는 곳(SchedulerExecutionService)에서 List<String>형으로 값을 넣었으므로 올바른 형변환입니다.
 		@SuppressWarnings("unchecked")
 		List<String> excludedColumns = (List<String>)dataMap.get(EXCLUDED_COLUMNS);
