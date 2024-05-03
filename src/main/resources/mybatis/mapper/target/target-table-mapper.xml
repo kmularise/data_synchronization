@@ -53,18 +53,17 @@
     </insert>
     <update id="updateTableFromTemporaryTable">
         UPDATE ${tableName} AS main
+        LEFT JOIN ${temporaryTable} AS temp ON temp.${key} = main.${key}
         SET
         <trim suffixOverrides=",">
             <foreach item="column" collection="columns" separator=",">
-                main.${column} = (SELECT temp.${column}
-                FROM ${temporaryTable} AS temp
-                WHERE temp.${key} = main.${key})
+                main.${column} = temp.${column}
             </foreach>
         </trim>
-        WHERE EXISTS (
-        SELECT 1
-        FROM ${temporaryTable} AS temp
-        WHERE temp.${key} = main.${key}
-        );
+        WHERE temp.${key} IS NOT NULL;
     </update>
+    <delete id="deleteAll">
+        DELETE
+        FROM ${tableName}
+    </delete>
 </mapper>

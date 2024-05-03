@@ -7,12 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import factory.integration.database.synchronizer.mapper.source.ColumnInfoMapper;
-import factory.integration.database.synchronizer.mapper.source.SourceDaoMapper;
 import factory.integration.database.synchronizer.mapper.source.SourceTableMapper;
-import factory.integration.database.synchronizer.mapper.target.TargetDaoMapper;
 import factory.integration.database.synchronizer.mapper.target.TargetTableMapper;
 import factory.integration.database.synchronizer.scheduler.job.SyncTableInfo;
-import factory.integration.database.synchronizer.web.service.SourceDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,10 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class SyncService {
-	private final SourceDaoMapper sourceDaoMapper;
-	private final TargetDaoMapper targetDaoMapper;
-	private final SourceDataService sourceDataService;
-
 	private final SourceTableMapper sourceTableMapper;
 	private final ColumnInfoMapper columnInfoMapper;
 	private final TargetTableMapper targetTableMapper;
@@ -43,6 +36,7 @@ public class SyncService {
 	private void synchronizeTable(SyncTableInfo syncTableInfo) {
 		String tableName = syncTableInfo.getTableName();
 		String temporaryTable = getTemporaryTable(tableName);
+		targetTableMapper.deleteAll(temporaryTable);
 		List<Map<String, Object>> rows = sourceTableMapper.selectAllFromTable(tableName);
 		List<String> columnNames = columnInfoMapper.selectColumnsByTable(tableName, "source_schema");
 		if (rows != null && !rows.isEmpty()) {

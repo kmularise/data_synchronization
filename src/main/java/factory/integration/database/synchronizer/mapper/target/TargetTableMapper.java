@@ -28,4 +28,6 @@ public interface TargetTableMapper {
 		@Param("key") String key);
 
 	List<Map<String, Object>> selectAllFromTable(@Param("tableName") String tableName);
+
+	void deleteAll(@Param("tableName") String tableName);
 }
