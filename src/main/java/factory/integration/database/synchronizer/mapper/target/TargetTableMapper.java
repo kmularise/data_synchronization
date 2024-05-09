@@ -30,4 +30,6 @@ public interface TargetTableMapper {
 	List<Map<String, Object>> selectAllFromTable(@Param("tableName") String tableName);
 
 	void deleteAll(@Param("tableName") String tableName);
+
+	void truncateTable(String tableName);
 }

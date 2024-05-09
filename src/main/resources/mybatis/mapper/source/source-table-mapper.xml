@@ -57,4 +57,25 @@
             </trim>
         </foreach>
     </insert>
+    <select id="selectNextPageByCursor" resultType="java.util.HashMap">
+        SELECT *
+        FROM ${tableName}
+        <if test="cursor != null">
+            WHERE id > #{cursor, jdbcType=BIGINT}
+        </if>
+        ORDER BY id
+        LIMIT #{size}
+    </select>
+    <select id="selectPrevPageByCursor" resultType="java.util.HashMap">
+        SELECT *
+        FROM ${tableName}
+        <if test="cursor != null">
+            WHERE id <![CDATA[<]]> #{cursor, jdbcType=BIGINT}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{size}
+    </select>
+    <update id="truncateTable" parameterType="java.lang.String">
+        TRUNCATE TABLE ${tableName}
+    </update>
 </mapper>

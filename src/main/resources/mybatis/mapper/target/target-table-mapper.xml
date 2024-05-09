@@ -29,8 +29,30 @@
     </insert>
     <delete id="deleteFromTableNotInTemporaryTable">
         DELETE
-        FROM ${tableName}
-        WHERE ${key} NOT IN (SELECT ${key} FROM ${temporaryTable})
+        main
+        FROM
+        ${tableName}
+        AS
+        main
+        LEFT
+        JOIN
+        ${temporaryTable}
+        AS
+        temp
+        ON
+        main
+        .
+        ${key}
+        =
+        temp
+        .
+        ${key}
+        WHERE
+        temp
+        .
+        ${key}
+        IS
+        NULL;
     </delete>
     <insert id="insertTableFromTemporaryTable">
         <!-- 동적으로 컬럼 목록을 생성 -->
@@ -66,4 +88,7 @@
         DELETE
         FROM ${tableName}
     </delete>
+    <update id="truncateTable" parameterType="java.lang.String">
+        TRUNCATE TABLE ${tableName}
+    </update>
 </mapper>
