@@ -4,12 +4,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="factory.integration.database.synchronizer.mapper.scheduler.SyncTaskDaoMapper">
-    <resultMap id="SchedulerDtoMap" type="SchedulerDto">
+    <resultMap id="SchedulerDtoMap" type="SyncTask">
         <result property="excludedColumns" column="excluded_columns"
                 typeHandler="factory.integration.database.synchronizer.mapper.scheduler.ColumnsTypeHandler"/>
     </resultMap>
     <select id="selectAll" resultMap="SchedulerDtoMap">
         SELECT *
+        FROM SYNC_TASK
+    </select>
+    <update id="truncate">
+        TRUNCATE TABLE SYNC_TASK
+    </update>
+    <insert id="insert" parameterType="SyncTask">
+        INSERT INTO SYNC_TASK
+        (job_name, period_minutes, table_name, is_active, insert_flag, update_flag, delete_flag, excluded_columns)
+        VALUES (#{jobName}, #{periodMinutes}, #{tableName}, #{isActive}, #{insertFlag}, #{updateFlag},
+                #{deleteFlag},
+                #{excludedColumns,javaType=list,jdbcType=VARCHAR,typeHandler=factory.integration.database.synchronizer.mapper.scheduler.ColumnsTypeHandler})
+    </insert>
+    <select id="selectPage" resultType="SyncTask">
+        SELECT *
+        FROM SYNC_TASK
+        ORDER BY id LIMIT #{first}, #{size}
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        SELECT COUNT(*)
         FROM SYNC_TASK
     </select>
 </mapper>
