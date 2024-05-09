@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import factory.integration.database.synchronizer.common.util.CursorPage;
 import factory.integration.database.synchronizer.web.service.SourceDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,15 +26,34 @@ public class SourceDataController {
 		List<String> tableNames = sourceDataService.getAllTables();
 		return "source_table_list";
 	}
-
+	
 	@GetMapping("/table/source")
-	public String showSourceTable(@RequestParam String tableName, Model model) {
+	public String showSourceTable(@RequestParam String tableName,
+		@RequestParam(required = false) Long nextCursor,
+		@RequestParam(required = false) Long prevCursor,
+		@RequestParam(defaultValue = "20") int size,
+		Model model) {
 		List<String> columns = sourceDataService.getTableColumns(tableName);
-		List<Map<String, Object>> maps = sourceDataService.selectAll(tableName);
+		if (prevCursor == null) {
+			CursorPage<Map<String, Object>> page = sourceDataService.selectNextPage(tableName, nextCursor, size);
+			model.addAttribute("columns", columns);
+			model.addAttribute("data", page.getContent());
+			model.addAttribute("tableName", tableName);
+			model.addAttribute("nextCursor", page.getNextCursor());
+			model.addAttribute("prevCursor", page.getPrevCursor());
+			model.addAttribute("hasNext", page.hasNext());
+			model.addAttribute("hasPrev", page.hasPrev());
+			return "source_table_page";
+		}
+		CursorPage<Map<String, Object>> page = sourceDataService.selectPrevPage(tableName, prevCursor, size);
 		model.addAttribute("columns", columns);
-		model.addAttribute("data", maps);
+		model.addAttribute("data", page.getContent());
 		model.addAttribute("tableName", tableName);
-		return "source_table_detail";
+		model.addAttribute("nextCursor", page.getNextCursor());
+		model.addAttribute("prevCursor", page.getPrevCursor());
+		model.addAttribute("hasNext", page.hasNext());
+		model.addAttribute("hasPrev", page.hasPrev());
+		return "source_table_page";
 	}
 
 	@PostMapping("/table/source/insert")
@@ -64,7 +84,7 @@ public class SourceDataController {
 		List<String> columns = sourceDataService.getTableColumns(tableName);
 		Map<String, Object> data = new HashMap<>();
 		for (String column : columns) {
-			if (map.get(column) != null && !map.get(column).equals("")) {
+			if (map.get(column) != null && !"".equals(map.get(column))) {
 				data.put(column, map.get(column));
 			}
 		}

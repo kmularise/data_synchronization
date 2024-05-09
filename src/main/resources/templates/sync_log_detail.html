@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Task Logs</title>
+</head>
+<body>
+<h1>Sync Task Logs</h1>
+
+<!-- Sync Task Logs 표시 -->
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Sync Task ID</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Sync Task Logs 데이터를 반복하여 표시 -->
+    <tr th:each="log : ${syncTaskLogs}">
+        <td th:text="${log.id}">1</td>
+        <td th:text="${log.syncTaskId}">Task ID</td>
+        <td th:text="${log.startTime}">Start Time</td>
+        <td th:text="${log.endTime}">End Time</td>
+        <td th:text="${log.status}">Status</td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 페이지네이션 -->
+<ul class="pagination">
+    <li th:if="${page > 0}">
+        <a th:href="@{/sync-task-logs(page=${page - 1}, size=${size})}">&laquo; Previous</a>
+    </li>
+    <li th:if="${not #lists.isEmpty(syncTaskLogs)}">
+        <a th:href="@{/sync-task-logs(page=${page + 1}, size=${size})}">Next &raquo;</a>
+    </li>
+</ul>
+</body>
+</html>

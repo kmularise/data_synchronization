@@ -7,25 +7,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import factory.integration.database.synchronizer.mapper.scheduler.SyncTask;
-import factory.integration.database.synchronizer.web.service.TaskInfoService;
+import factory.integration.database.synchronizer.mapper.scheduler.SyncTaskLog;
+import factory.integration.database.synchronizer.web.service.TaskLogService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class TaskInfoController {
-	private final TaskInfoService taskInfoService;
+public class TaskLogController {
+	private final TaskLogService taskLogService;
 
-	@GetMapping("/task")
-	public String getSyncTaskPage(
+	@GetMapping("/sync-task-logs")
+	public String getSyncTaskLogsPage(
 		@RequestParam(defaultValue = "1") Integer page,
 		@RequestParam(defaultValue = "10") Integer size,
-		Model model) {
-		List<SyncTask> taskList = taskInfoService.getTaskPage(page, size);
-		model.addAttribute("schedulers", taskList);
+		Model model
+	) {
+		List<SyncTaskLog> syncTaskLogs = taskLogService.selectPage(page, size);
+		model.addAttribute("syncTaskLogs", syncTaskLogs);
 		model.addAttribute("page", page);
 		model.addAttribute("size", size);
-		model.addAttribute("totalPages", taskInfoService.getTotalPage(size));
-		return "task_info_detail";
+		return "sync_log_detail";
 	}
 }
