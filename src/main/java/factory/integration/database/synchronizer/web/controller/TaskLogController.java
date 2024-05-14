@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class TaskLogController {
 	private final TaskLogService taskLogService;
 
-	@GetMapping("/sync-task-logs")
+	@GetMapping("/task-logs")
 	public String getSyncTaskLogsPage(
 		@RequestParam(defaultValue = "1") Integer page,
 		@RequestParam(defaultValue = "10") Integer size,

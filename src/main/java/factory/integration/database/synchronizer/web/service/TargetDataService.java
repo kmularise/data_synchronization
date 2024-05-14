@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import factory.integration.database.synchronizer.mapper.source.ColumnInfoMapper;
 import factory.integration.database.synchronizer.mapper.target.TargetTableMapper;
+import factory.integration.database.synchronizer.web.util.PageRequestDto;
+import factory.integration.database.synchronizer.web.util.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -15,19 +17,21 @@ import lombok.RequiredArgsConstructor;
 public class TargetDataService {
 	private final TargetTableMapper targetTableMapper;
 	private final ColumnInfoMapper columnInfoMapper;
+	private final TargetTableInfoService targetTableInfoService;
 
 	@Transactional(transactionManager = "targetTransactionManager", readOnly = true)
 	public List<String> getTableColumns(String tableName) {
-		return columnInfoMapper.selectColumnsByTable(tableName, "target_schema");
+		return targetTableInfoService.getColumns(tableName);
 	}
 
 	@Transactional(transactionManager = "targetTransactionManager", readOnly = true)
 	public List<String> getAllTables() {
-		return columnInfoMapper.selectAllTableNames("target_schema");
+		return targetTableInfoService.getAllTables();
 	}
 
-	@Transactional(transactionManager = "targetTransactionManager")
-	public List<Map<String, Object>> selectAll(String tableName) {
-		return targetTableMapper.selectAllFromTable(tableName);
+	public PageResponseDto<Map<String, Object>> getPage(String tableName, PageRequestDto pageRequestDto) {
+		List<Map<String, Object>> content = targetTableMapper.selectPage(tableName, pageRequestDto.getFirst(),
+			pageRequestDto.getSize());
+		return new PageResponseDto<>(pageRequestDto.getSize(), targetTableMapper.count(tableName), content);
 	}
 }

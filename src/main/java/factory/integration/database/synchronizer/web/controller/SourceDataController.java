@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import factory.integration.database.synchronizer.common.util.CursorPage;
 import factory.integration.database.synchronizer.web.service.SourceDataService;
+import factory.integration.database.synchronizer.web.util.PageRequestDto;
+import factory.integration.database.synchronizer.web.util.PageResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,35 +25,24 @@ public class SourceDataController {
 	@GetMapping("table/source/collection")
 	public String showAllTables(Model model) {
 		List<String> tableNames = sourceDataService.getAllTables();
+		model.addAttribute("tableNames", tableNames);
 		return "source_table_list";
 	}
-	
+
 	@GetMapping("/table/source")
 	public String showSourceTable(@RequestParam String tableName,
-		@RequestParam(required = false) Long nextCursor,
-		@RequestParam(required = false) Long prevCursor,
-		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(defaultValue = "1") Integer page,
+		@RequestParam(defaultValue = "10") Integer size,
 		Model model) {
 		List<String> columns = sourceDataService.getTableColumns(tableName);
-		if (prevCursor == null) {
-			CursorPage<Map<String, Object>> page = sourceDataService.selectNextPage(tableName, nextCursor, size);
-			model.addAttribute("columns", columns);
-			model.addAttribute("data", page.getContent());
-			model.addAttribute("tableName", tableName);
-			model.addAttribute("nextCursor", page.getNextCursor());
-			model.addAttribute("prevCursor", page.getPrevCursor());
-			model.addAttribute("hasNext", page.hasNext());
-			model.addAttribute("hasPrev", page.hasPrev());
-			return "source_table_page";
-		}
-		CursorPage<Map<String, Object>> page = sourceDataService.selectPrevPage(tableName, prevCursor, size);
-		model.addAttribute("columns", columns);
-		model.addAttribute("data", page.getContent());
+		PageRequestDto pageRequestDto = new PageRequestDto(page, size);
+		PageResponseDto<Map<String, Object>> pageResponseDto = sourceDataService.getPage(tableName, pageRequestDto);
 		model.addAttribute("tableName", tableName);
-		model.addAttribute("nextCursor", page.getNextCursor());
-		model.addAttribute("prevCursor", page.getPrevCursor());
-		model.addAttribute("hasNext", page.hasNext());
-		model.addAttribute("hasPrev", page.hasPrev());
+		model.addAttribute("columns", columns);
+		model.addAttribute("data", pageResponseDto.getContent());
+		model.addAttribute("size", size);
+		model.addAttribute("page", page);
+		model.addAttribute("totalPages", pageResponseDto.getTotalPage());
 		return "source_table_page";
 	}
 
