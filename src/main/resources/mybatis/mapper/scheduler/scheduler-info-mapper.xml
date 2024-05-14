@@ -15,7 +15,7 @@
     <update id="truncate">
         TRUNCATE TABLE SYNC_TASK
     </update>
-    <insert id="insert" parameterType="SyncTask">
+    <insert id="insert" parameterType="SyncTask" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO SYNC_TASK
         (job_name, period_minutes, table_name, is_active, insert_flag, update_flag, delete_flag, excluded_columns)
         VALUES (#{jobName}, #{periodMinutes}, #{tableName}, #{isActive}, #{insertFlag}, #{updateFlag},
@@ -30,5 +30,20 @@
     <select id="count" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM SYNC_TASK
+    </select>
+    <update id="updateActive">
+        UPDATE SYNC_TASK
+        SET is_active = #{isActive}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE
+        FROM SYNC_TASK
+        WHERE id = #{id}
+    </delete>
+    <select id="selectById" resultType="SyncTask">
+        SELECT *
+        FROM SYNC_TASK
+        WHERE id = #{id}
     </select>
 </mapper>

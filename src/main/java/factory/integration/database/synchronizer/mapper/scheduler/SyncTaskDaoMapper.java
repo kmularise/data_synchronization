@@ -16,4 +16,10 @@ public interface SyncTaskDaoMapper {
 	void insert(SyncTask syncTask);
 
 	Long count();
+
+	void updateActive(@Param("id") Long id, @Param("isActive") boolean isActive);
+
+	void deleteById(Long id);
+
+	SyncTask selectById(Long id);
 }

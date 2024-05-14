@@ -32,4 +32,10 @@ public interface TargetTableMapper {
 	void deleteAll(@Param("tableName") String tableName);
 
 	void truncateTable(String tableName);
+
+	List<Map<String, Object>> selectPage(@Param("tableName") String tableName,
+		@Param("first") Long first,
+		@Param("size") int size);
+
+	Long count(String tableName);
 }

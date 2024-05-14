@@ -31,4 +31,9 @@ public interface SourceTableMapper {
 	void insertAll(@Param("tableName") String tableName, @Param("list") List<Map<String, Object>> list);
 
 	void truncateTable(String tableName);
+
+	List<Map<String, Object>> selectPage(@Param("tableName") String tableName, @Param("first") Long first,
+		@Param("size") int size);
+
+	Long count(String tableName);
 }

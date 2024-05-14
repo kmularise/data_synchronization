@@ -4,7 +4,9 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -20,10 +22,11 @@ public class ColumnsTypeHandler implements TypeHandler<List<String>> {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
-	public void setParameter(PreparedStatement ps, int index, List<String> parameter, JdbcType jdbcType) throws
-		SQLException {
+	public void setParameter(PreparedStatement ps, int index, List<String> parameter, JdbcType jdbcType) {
 		try {
-			ps.setString(index, objectMapper.writeValueAsString(parameter));
+			Map<String, List<String>> map = new HashMap<>();
+			map.put("columns", parameter);
+			ps.setString(index, objectMapper.writeValueAsString(map));
 		} catch (JsonProcessingException e) {
 			throw new IllegalArgumentException("Error converting List<String> to JSON string.", e);
 		} catch (SQLException e) {

@@ -91,4 +91,13 @@
     <update id="truncateTable" parameterType="java.lang.String">
         TRUNCATE TABLE ${tableName}
     </update>
+    <select id="count" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM ${tableName}
+    </select>
+    <select id="selectPage" resultType="java.util.HashMap">
+        SELECT *
+        FROM ${tableName}
+        ORDER BY id LIMIT #{first}, #{size}
+    </select>
 </mapper>
