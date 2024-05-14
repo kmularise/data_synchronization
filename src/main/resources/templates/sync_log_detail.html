@@ -34,10 +34,10 @@
 <!-- 페이지네이션 -->
 <ul class="pagination">
     <li th:if="${page > 0}">
-        <a th:href="@{/sync-task-logs(page=${page - 1}, size=${size})}">&laquo; Previous</a>
+        <a th:href="@{/task-logs(page=${page - 1}, size=${size})}">&laquo; Previous</a>
     </li>
     <li th:if="${not #lists.isEmpty(syncTaskLogs)}">
-        <a th:href="@{/sync-task-logs(page=${page + 1}, size=${size})}">Next &raquo;</a>
+        <a th:href="@{/task-logs(page=${page + 1}, size=${size})}">Next &raquo;</a>
     </li>
 </ul>
 </body>

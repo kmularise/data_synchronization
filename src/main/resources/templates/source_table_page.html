@@ -18,20 +18,26 @@
         }
 
         .pagination {
+            list-style-type: none;
             display: flex;
             justify-content: center;
-            list-style: none;
+            padding: 20px;
         }
 
         .pagination li {
-            margin: 0 5px;
+            margin: 5px;
         }
 
         .pagination a {
             text-decoration: none;
             padding: 5px 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             color: #000;
+        }
+
+        .pagination a.active, .pagination a:hover {
+            background-color: #007bff;
+            color: white;
         }
     </style>
 </head>
@@ -47,8 +53,6 @@
         <tbody>
         <tr>
             <td th:each="col : ${columns}">
-                <input th:if="${col == 'id'}" type="hidden" th:name="${col.toLowerCase().replaceAll(' ', '')}"
-                       value="AUTO_GENERATED"/>
                 <input th:if="${col != 'id'}" type="text" th:name="${col.toLowerCase().replaceAll(' ', '')}"/>
             </td>
         </tr>
@@ -85,15 +89,10 @@
     </tr>
     </tbody>
 </table>
-
-<!-- Pagination controls -->
 <ul class="pagination">
-    <li th:if="${hasPrev}">
-        <a th:href="@{/table/source(tableName=${tableName}, prevCursor=${prevCursor}, size=${size})}">&laquo;
-            Previous</a>
-    </li>
-    <li th:if="${hasNext}">
-        <a th:href="@{/table/source(tableName=${tableName}, nextCursor=${nextCursor}, size=${size})}">Next &raquo;</a>
+    <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{/table/source(tableName=${tableName}, page=${pageNum}, size=${size})}" th:text="${pageNum}"
+           th:classappend="${page == pageNum} ? 'active' : ''"></a>
     </li>
 </ul>
 </body>

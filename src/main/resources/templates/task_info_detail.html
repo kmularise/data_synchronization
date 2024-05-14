@@ -59,12 +59,12 @@
 </table>
 
 <div class="pagination">
-    <a href="#" th:href="@{/task(size=${size}, page=${page - 1})}" th:if="${page > 1}" class="page-link">&laquo;
+    <a href="#" th:href="@{/tasks(size=${size}, page=${page - 1})}" th:if="${page > 1}" class="page-link">&laquo;
         Previous</a>
     <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-        <a href="#" th:href="@{/task(size=${size}, page=${i})}" th:text="${i}" class="page-link"></a>
+        <a href="#" th:href="@{/tasks(size=${size}, page=${i})}" th:text="${i}" class="page-link"></a>
     </span>
-    <a href="#" th:href="@{/task(size=${size}, page=${page + 1})}" th:if="${page < totalPages}" class="page-link">Next
+    <a href="#" th:href="@{/tasks(size=${size}, page=${page + 1})}" th:if="${page < totalPages}" class="page-link">Next
         &raquo;</a>
 </div>
 

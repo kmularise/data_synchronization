@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>source 테이블 데이터 작업 UI</title>
+    <title>target 테이블 데이터 작업 UI</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -16,21 +16,52 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .pagination {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pagination li {
+            margin: 5px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            color: #000;
+        }
+
+        .pagination a.active, .pagination a:hover {
+            background-color: #007bff;
+            color: white;
+        }
     </style>
 </head>
 <body>
-<h2>테이블 데이터 조회</h2>
+<h2>테이블 데이터 조회: <span th:text="${tableName}"></span></h2>
 <table>
     <thead>
     <tr>
-        <th th:each="col : ${columns}" th:text="${col}"></th>
+        <th th:each="col : ${columns}" th:text="${col}">
+        </th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="row : ${data}">
-        <td th:each="col : ${columns}" th:text="${row[col.toLowerCase().replaceAll(' ', '')]}"></td>
+        <td th:each="col : ${columns}" th:text="${row[col.toLowerCase().replaceAll(' ', '')]}">
+        </td>
     </tr>
     </tbody>
 </table>
+<ul class="pagination">
+    <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{/table/target(tableName=${tableName}, page=${pageNum}, size=${size})}" th:text="${pageNum}"
+           th:classappend="${page == pageNum} ? 'active' : ''"></a>
+    </li>
+</ul>
 </body>
 </html>
