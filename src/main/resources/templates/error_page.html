@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<h1>Error Occurred!</h1>
+
+<!-- 상태 코드를 보여주는 부분 -->
+<p>Status code: <span th:text="${status}">500</span></p>
+
+<!-- 에러 메시지를 보여주는 부분 -->
+<p>Message: <span th:text="${message}">An unexpected error has occurred.</span></p>
+
+<!-- 홈페이지로 돌아가는 링크 -->
+<a href="/" th:href="@{/}">Go Home</a>
+</body>
+</html>
