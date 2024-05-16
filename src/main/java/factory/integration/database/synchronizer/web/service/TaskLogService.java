@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import factory.integration.database.synchronizer.mapper.scheduler.SyncTaskLog;
 import factory.integration.database.synchronizer.mapper.scheduler.SyncTaskLogDaoMapper;
+import factory.integration.database.synchronizer.web.util.PageRequestDto;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,8 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class TaskLogService {
 	private final SyncTaskLogDaoMapper syncTaskLogDaoMapper;
 
-	public List<SyncTaskLog> selectPage(int page, int size) {
-		Long first = (long)(page - 1) * size;
-		return syncTaskLogDaoMapper.selectPage(first, size);
+	public List<SyncTaskLog> selectPage(PageRequestDto pageRequestDto) {
+		return syncTaskLogDaoMapper.selectPage(pageRequestDto.getFirst(), pageRequestDto.getSize());
 	}
 }

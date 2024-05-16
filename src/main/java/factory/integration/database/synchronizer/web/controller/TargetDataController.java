@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import factory.integration.database.synchronizer.web.configuration.Page;
 import factory.integration.database.synchronizer.web.service.TargetDataService;
 import factory.integration.database.synchronizer.web.util.PageRequestDto;
 import factory.integration.database.synchronizer.web.util.PageResponseDto;
@@ -29,17 +30,15 @@ public class TargetDataController {
 
 	@GetMapping("/table/target")
 	public String showTargetTable(@RequestParam String tableName,
-		@RequestParam(defaultValue = "1") Integer page,
-		@RequestParam(defaultValue = "10") Integer size,
+		@Page PageRequestDto pageRequestDto,
 		Model model) {
 		List<String> columns = targetDataService.getTableColumns(tableName);
-		PageResponseDto<Map<String, Object>> pageResponseDto = targetDataService.getPage(tableName,
-			new PageRequestDto(page, size));
+		PageResponseDto<Map<String, Object>> pageResponseDto = targetDataService.getPage(tableName, pageRequestDto);
 		model.addAttribute("tableName", tableName);
 		model.addAttribute("columns", columns);
 		model.addAttribute("data", pageResponseDto.getContent());
-		model.addAttribute("size", size);
-		model.addAttribute("page", page);
+		model.addAttribute("size", pageRequestDto.getSize());
+		model.addAttribute("page", pageRequestDto.getPage());
 		model.addAttribute("totalPages", pageResponseDto.getTotalPage());
 		return "target_table_detail";
 	}

@@ -5,10 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import factory.integration.database.synchronizer.mapper.scheduler.SyncTaskLog;
+import factory.integration.database.synchronizer.web.configuration.Page;
 import factory.integration.database.synchronizer.web.service.TaskLogService;
+import factory.integration.database.synchronizer.web.util.PageRequestDto;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -18,14 +19,13 @@ public class TaskLogController {
 
 	@GetMapping("/task-logs")
 	public String getSyncTaskLogsPage(
-		@RequestParam(defaultValue = "1") Integer page,
-		@RequestParam(defaultValue = "10") Integer size,
+		@Page PageRequestDto pageRequestDto,
 		Model model
 	) {
-		List<SyncTaskLog> syncTaskLogs = taskLogService.selectPage(page, size);
+		List<SyncTaskLog> syncTaskLogs = taskLogService.selectPage(pageRequestDto);
 		model.addAttribute("syncTaskLogs", syncTaskLogs);
-		model.addAttribute("page", page);
-		model.addAttribute("size", size);
+		model.addAttribute("page", pageRequestDto.getPage());
+		model.addAttribute("size", pageRequestDto.getSize());
 		return "sync_log_detail";
 	}
 }

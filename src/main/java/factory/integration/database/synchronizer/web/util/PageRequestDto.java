@@ -18,6 +18,11 @@ public class PageRequestDto {
 		this.size = size;
 	}
 
+	// public PageRequestDto() {
+	// 	this.page = 1;
+	// 	this.size = 10;
+	// }
+
 	private static void validateCurrentPage(int page) {
 		if (page <= 0) {
 			throw new BusinessException(ErrorMessage.PAGE_NON_POSITIVE, HttpStatus.BAD_REQUEST.value());

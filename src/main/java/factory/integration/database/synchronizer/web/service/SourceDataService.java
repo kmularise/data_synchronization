@@ -17,7 +17,6 @@ public class SourceDataService {
 	private final SourceTableMapper sourceTableMapper;
 	private final SourceTableInfoService sourceTableInfoService;
 
-	//TODO: page, size 묶어서 하나로 처리하기 Pageable
 	@Transactional(transactionManager = "sourceTransactionManager")
 	public PageResponseDto<Map<String, Object>> getPage(String tableName, PageRequestDto pageDto) {
 		sourceTableInfoService.checkTable(tableName);

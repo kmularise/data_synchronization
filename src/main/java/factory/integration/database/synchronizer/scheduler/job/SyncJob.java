@@ -26,7 +26,6 @@ public class SyncJob implements Job {
 	public void execute(JobExecutionContext context) {
 		JobDataMap dataMap = context.getMergedJobDataMap();
 		SyncTaskInfoRequest syncTaskInfoRequest = (SyncTaskInfoRequest)dataMap.get(SYNC_TASK_INFO);
-		//AOP
 		SyncTaskLog syncTaskLog = null;
 		try {
 			syncTaskLog = new SyncTaskLog(syncTaskInfoRequest.getJobId(),
@@ -36,6 +35,7 @@ public class SyncJob implements Job {
 			syncService.synchronize(syncTaskInfoRequest);
 			taskLogWriteService.updateSuccess(syncTaskLog.getId());
 		} catch (Exception exception) {
+			log.error(exception.getMessage());
 			if (syncTaskLog == null || syncTaskLog.getId() == null) {
 				taskLogWriteService.createLog(new SyncTaskLog(syncTaskInfoRequest.getJobId(),
 					LocalDateTime.now(),
