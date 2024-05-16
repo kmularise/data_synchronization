@@ -32,9 +32,9 @@
     </style>
 </head>
 <body>
-<h1>작업 관리</h1>
+<h1>동기화 작업 관리</h1>
 
-<h2>작업 목록</h2>
+<h2>동기화 작업 목록</h2>
 <table>
     <tr>
         <th>ID</th>
@@ -45,7 +45,7 @@
         <th>Insert Flag</th>
         <th>Update Flag</th>
         <th>Delete Flag</th>
-        <th>제외된 열</th>
+        <th>동기화 제외 컬럼</th>
         <th>Actions</th>
     </tr>
     <tr th:each="scheduler : ${schedulers}">
@@ -116,7 +116,7 @@
         <input type="checkbox" id="deleteFlag" name="deleteFlag"/>
     </div>
     <div>
-        <label for="excludedColumns">제외된 열 (콤마로 구분):</label>
+        <label for="excludedColumns">동기화 제외 컬럼 (','로 구분):</label>
         <input type="text" id="excludedColumns" name="excludedColumns"/>
     </div>
     <button type="submit">Add Task</button>
