@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>source 테이블 데이터 작업 UI</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .pagination {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pagination li {
+            margin: 5px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            color: #000;
+        }
+
+        .pagination a.active, .pagination a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h2>source 테이블 데이터 추가</h2>
+<form action="#" id="dataForm" th:action="@{/table/source/insert(tableName=${tableName})}" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th th:each="col : ${columns}" th:text="${col}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:each="col : ${columns}">
+                <input th:if="${col != 'id'}" type="text" th:name="${col.toLowerCase().replaceAll(' ', '')}"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">Insert</button>
+</form>
+<h2>source 테이블 데이터 조회 및 수정 및 삭제</h2>
+<table>
+    <thead>
+    <tr>
+        <th th:each="col : ${columns}" th:text="${col}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row : ${data}">
+        <form th:action="@{/table/source/update(tableName=${tableName})}" method="post">
+            <td th:each="col : ${columns}">
+                <span th:if="${col == 'id'}" th:text="${row[col.toLowerCase().replaceAll(' ', '')]}"></span>
+                <input th:if="${col == 'id'}" type="hidden" th:name="${col.toLowerCase().replaceAll(' ', '')}"
+                       th:value="${row[col.toLowerCase().replaceAll(' ', '')]}"/>
+                <input th:if="${col != 'id'}" type="text" th:name="${col.toLowerCase().replaceAll(' ', '')}"
+                       th:value="${row[col.toLowerCase().replaceAll(' ', '')]}"/>
+            </td>
+            <td>
+                <button type="submit">Update</button>
+            </td>
+        </form>
+        <form th:action="@{/table/source/delete(tableName=${tableName}, id=${row.id})}" method="post">
+            <td>
+                <button type="submit">Delete</button>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+<ul class="pagination">
+    <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{/table/source(tableName=${tableName}, page=${pageNum}, size=${size})}" th:text="${pageNum}"
+           th:classappend="${page == pageNum} ? 'active' : ''"></a>
+    </li>
+</ul>
+</body>
+</html>

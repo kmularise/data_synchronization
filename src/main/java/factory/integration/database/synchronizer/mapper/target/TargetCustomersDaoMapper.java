@@ -4,14 +4,17 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import factory.integration.database.synchronizer.mapper.CustomerDto;
+import factory.integration.database.synchronizer.mapper.Customer;
 
 @Mapper
 public interface TargetCustomersDaoMapper {
-	CustomerDto selectCustomerById(Long id);
-	List<CustomerDto> selectAll();
+	Customer selectCustomerById(Long id);
 
-	void insertCustomer(CustomerDto customerDto);
+	List<Customer> selectAll();
+
+	void insertCustomer(Customer customer);
+
 	void deleteCustomerById(Long id);
-	void updateCustomerById(CustomerDto customerDto);
+
+	void updateCustomerById(Customer customer);
 }

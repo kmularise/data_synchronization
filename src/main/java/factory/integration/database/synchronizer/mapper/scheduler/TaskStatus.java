@@ -1,6 +1,7 @@
 package factory.integration.database.synchronizer.mapper.scheduler;
 
-public enum Status {
+public enum TaskStatus {
 	SUCCESS,
-	FAILURE
+	FAILURE,
+	WAITING
 }

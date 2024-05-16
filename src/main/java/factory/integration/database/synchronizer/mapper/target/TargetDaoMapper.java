@@ -5,17 +5,17 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import factory.integration.database.synchronizer.mapper.CarDto;
-import factory.integration.database.synchronizer.mapper.CustomerDto;
-import factory.integration.database.synchronizer.mapper.OrderDto;
+import factory.integration.database.synchronizer.mapper.Car;
+import factory.integration.database.synchronizer.mapper.Customer;
+import factory.integration.database.synchronizer.mapper.Order;
 
 @Mapper
 public interface TargetDaoMapper {
-	void insertTemporaryCustomers(@Param("customers") List<CustomerDto> customers);
+	void insertTemporaryCustomers(@Param("customers") List<Customer> customers);
 
-	void insertTemporaryCars(@Param("cars") List<CarDto> cars);
+	void insertTemporaryCars(@Param("cars") List<Car> cars);
 
-	void insertTemporaryOrders(@Param("orders") List<OrderDto> orders);
+	void insertTemporaryOrders(@Param("orders") List<Order> orders);
 
 	void deleteCarsNotInTemporaryCars();
 
@@ -36,8 +36,6 @@ public interface TargetDaoMapper {
 	void updateOrdersFromTemporaryOrders();
 
 	void deleteAllTemporaryCars();
-
-	void deleteAllTemporaryOrders();
 
 	void deleteAllTemporaryCustomers();
 }

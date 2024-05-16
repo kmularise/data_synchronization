@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>데이터 사용자 프로그램 UI</h1>
+<form action="#" th:action="@{/tasks}" method="get">
+    <button type="submit">데이터 동기화 작업 목록</button>
+</form>
+<form action="#" th:action="@{/task-logs}" method="get">
+    <button type="submit">데이터 동기화 작업의 실행 로그</button>
+</form>
+<form action="#" th:action="@{/table/source/collection}" method="get">
+    <button type="submit">source 테이블 목록</button>
+</form>
+<form action="#" th:action="@{/table/target/collection}" method="get">
+    <button type="submit">target 테이블 목록</button>
+</form>
+
+</body>
+</html>

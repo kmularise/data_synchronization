@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="factory.integration.database.synchronizer.mapper.target.TargetTableMapper">
+    <select id="selectAllFromTable" resultType="map">
+        SELECT *
+        FROM ${tableName}
+    </select>
+    <insert id="insertAll" parameterType="list">
+        INSERT INTO ${tableName}
+        <!-- 칼럼 이름 동적으로 생성 -->
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <foreach collection="list[0].keySet()" item="column" separator=",">
+                ${column}
+            </foreach>
+        </trim>
+
+        VALUES
+        <!-- 값 리스트 동적으로 생성 -->
+        <foreach collection="list" item="row" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <foreach collection="row.entrySet()" item="cell" separator=",">
+                    #{cell}
+                </foreach>
+            </trim>
+        </foreach>
+    </insert>
+    <delete id="deleteFromTableNotInTemporaryTable">
+        DELETE
+        main
+        FROM
+        ${tableName}
+        AS
+        main
+        LEFT
+        JOIN
+        ${temporaryTable}
+        AS
+        temp
+        ON
+        main
+        .
+        ${key}
+        =
+        temp
+        .
+        ${key}
+        WHERE
+        temp
+        .
+        ${key}
+        IS
+        NULL;
+    </delete>
+    <insert id="insertTableFromTemporaryTable">
+        <!-- 동적으로 컬럼 목록을 생성 -->
+        INSERT INTO ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <foreach item="column" collection="columns" separator=",">
+                ${column}
+            </foreach>
+        </trim>
+        SELECT
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <foreach item="column" collection="columns" separator=", ">
+                temp.${column}
+            </foreach>
+        </trim>
+        FROM ${temporaryTable} AS temp
+        LEFT JOIN ${tableName} AS main
+        ON temp.${key} = main.${key}
+        WHERE main.${key} IS NULL;
+    </insert>
+    <update id="updateTableFromTemporaryTable">
+        UPDATE ${tableName} AS main
+        LEFT JOIN ${temporaryTable} AS temp ON temp.${key} = main.${key}
+        SET
+        <trim suffixOverrides=",">
+            <foreach item="column" collection="columns" separator=",">
+                main.${column} = temp.${column}
+            </foreach>
+        </trim>
+        WHERE temp.${key} IS NOT NULL;
+    </update>
+    <delete id="deleteAll">
+        DELETE
+        FROM ${tableName}
+    </delete>
+    <update id="truncateTable" parameterType="java.lang.String">
+        TRUNCATE TABLE ${tableName}
+    </update>
+    <select id="count" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM ${tableName}
+    </select>
+    <select id="selectPage" resultType="java.util.HashMap">
+        SELECT *
+        FROM ${tableName}
+        ORDER BY id LIMIT #{first}, #{size}
+    </select>
+</mapper>
