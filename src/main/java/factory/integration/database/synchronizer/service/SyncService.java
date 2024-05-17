@@ -23,14 +23,8 @@ public class SyncService {
 
 	@Transactional(transactionManager = "distributedTransactionManager", rollbackFor = {Exception.class})
 	public void synchronize(SyncTaskInfoRequest syncTaskInfoRequest) {
-		List<String> tables = sourceTableInfoService.getAllTables();
-		for (String table : tables) {
-			if (table.equals(syncTaskInfoRequest.getTableName())) {
-				synchronizeTable(syncTaskInfoRequest);
-				return;
-			}
-		}
-		throw new IllegalArgumentException("invalid table name");
+		sourceTableInfoService.checkTable(syncTaskInfoRequest.getTableName());
+		synchronizeTable(syncTaskInfoRequest);
 	}
 
 	private void synchronizeTable(SyncTaskInfoRequest syncTaskInfoRequest) {
