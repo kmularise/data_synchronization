@@ -33,7 +33,7 @@
 
 <!-- 페이지네이션 -->
 <ul class="pagination">
-    <li th:if="${page > 0}">
+    <li th:if="${page > 1}">
         <a th:href="@{/task-logs(page=${page - 1}, size=${size})}">&laquo; Previous</a>
     </li>
     <li th:if="${not #lists.isEmpty(syncTaskLogs)}">
