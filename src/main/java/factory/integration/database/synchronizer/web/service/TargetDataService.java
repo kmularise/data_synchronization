@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import factory.integration.database.synchronizer.mapper.source.ColumnInfoMapper;
 import factory.integration.database.synchronizer.mapper.target.TargetTableMapper;
 import factory.integration.database.synchronizer.web.util.PageRequestDto;
 import factory.integration.database.synchronizer.web.util.PageResponseDto;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TargetDataService {
 	private final TargetTableMapper targetTableMapper;
-	private final ColumnInfoMapper columnInfoMapper;
 	private final TargetTableInfoService targetTableInfoService;
 
 	@Transactional(transactionManager = "targetTransactionManager", readOnly = true)

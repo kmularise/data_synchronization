@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.zaxxer.hikari.HikariConfig;
 
-import factory.integration.database.synchronizer.mapper.source.ColumnInfoMapper;
+import factory.integration.database.synchronizer.mapper.target.TargetColumnInfoMapper;
 import factory.integration.database.synchronizer.web.exception.BusinessException;
 import factory.integration.database.synchronizer.web.service.TargetTableInfoService;
 
@@ -21,13 +21,13 @@ import factory.integration.database.synchronizer.web.service.TargetTableInfoServ
 public class TargetTableInfoServiceTest {
 	private TargetTableInfoService targetTableInfoService;
 	private HikariConfig targetHikariConfig;
-	private ColumnInfoMapper columnInfoMapper;
+	private TargetColumnInfoMapper targetColumnInfoMapper;
 
 	@BeforeEach
 	void init() {
 		targetHikariConfig = mock(HikariConfig.class);
-		columnInfoMapper = mock(ColumnInfoMapper.class);
-		targetTableInfoService = new TargetTableInfoService(columnInfoMapper, targetHikariConfig);
+		targetColumnInfoMapper = mock(TargetColumnInfoMapper.class);
+		targetTableInfoService = new TargetTableInfoService(targetColumnInfoMapper, targetHikariConfig);
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class TargetTableInfoServiceTest {
 	void checkTableInvalid() {
 		String schema = "target_schema";
 		doReturn(schema).when(targetHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("customer", "order", "car")).when(targetColumnInfoMapper).selectAllTableNames(schema);
 		assertThrows(BusinessException.class, () -> targetTableInfoService.checkTable("invalid_table_name"));
 	}
 
@@ -44,7 +44,7 @@ public class TargetTableInfoServiceTest {
 	void checkTableValid() {
 		String schema = "target_schema";
 		doReturn(schema).when(targetHikariConfig).getSchema();
-		doReturn(List.of("customer", "IF_customer")).when(columnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("customer", "IF_customer")).when(targetColumnInfoMapper).selectAllTableNames(schema);
 		assertDoesNotThrow(() -> targetTableInfoService.checkTable("IF_customer"));
 	}
 
@@ -54,8 +54,8 @@ public class TargetTableInfoServiceTest {
 		String tableName = "customer";
 		String schema = "target_schema";
 		doReturn(schema).when(targetHikariConfig).getSchema();
-		doReturn(List.of("customer", "IF_customer")).when(columnInfoMapper).selectAllTableNames(schema);
-		doReturn(List.of("id", "name")).when(columnInfoMapper).selectColumnsByTable(tableName, schema);
+		doReturn(List.of("customer", "IF_customer")).when(targetColumnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("id", "name")).when(targetColumnInfoMapper).selectColumnsByTable(tableName, schema);
 		assertEquals(List.of("id", "name"), targetTableInfoService.getColumns(tableName));
 	}
 
@@ -65,7 +65,7 @@ public class TargetTableInfoServiceTest {
 		String tableName = "sample";
 		String schema = "source_schema";
 		doReturn(schema).when(targetHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("customer", "order", "car")).when(targetColumnInfoMapper).selectAllTableNames(schema);
 		assertThrows(BusinessException.class, () -> targetTableInfoService.getColumns(tableName));
 	}
 
