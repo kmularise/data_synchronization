@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zaxxer.hikari.HikariConfig;
 
-import factory.integration.database.synchronizer.mapper.source.ColumnInfoMapper;
+import factory.integration.database.synchronizer.mapper.target.TargetColumnInfoMapper;
 import factory.integration.database.synchronizer.web.exception.BusinessException;
 import factory.integration.database.synchronizer.web.exception.ErrorMessage;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class TargetTableInfoService {
-	private final ColumnInfoMapper columnInfoMapper;
+	private final TargetColumnInfoMapper targetColumnInfoMapper;
 	private final HikariConfig targetHikariConfig;
 
 	public List<String> getAllTables() {
-		return columnInfoMapper.selectAllTableNames(targetHikariConfig.getSchema());
+		return targetColumnInfoMapper.selectAllTableNames(targetHikariConfig.getSchema());
 	}
 
 	public void checkTable(String tableName) {
@@ -34,6 +34,6 @@ public class TargetTableInfoService {
 
 	public List<String> getColumns(String tableName) {
 		checkTable(tableName);
-		return columnInfoMapper.selectColumnsByTable(tableName, targetHikariConfig.getSchema());
+		return targetColumnInfoMapper.selectColumnsByTable(tableName, targetHikariConfig.getSchema());
 	}
 }

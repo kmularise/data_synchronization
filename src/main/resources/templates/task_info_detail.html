@@ -101,19 +101,26 @@
     </div>
     <div>
         <label for="isActive">활성화 상태:</label>
-        <input type="checkbox" id="isActive" name="isActive"/>
+        <input type="hidden" id="isActiveHidden" name="isActive" value="false"/>
+        <input type="checkbox" id="isActive" name="isActiveCheckbox" onclick="toggleCheckbox(this, 'isActiveHidden')"/>
     </div>
     <div>
         <label for="insertFlag">Insert Flag:</label>
-        <input type="checkbox" id="insertFlag" name="insertFlag"/>
+        <input type="hidden" id="insertFlagHidden" name="insertFlag" value="false"/>
+        <input type="checkbox" id="insertFlag" name="insertFlagCheckbox"
+               onclick="toggleCheckbox(this, 'insertFlagHidden')"/>
     </div>
     <div>
         <label for="updateFlag">Update Flag:</label>
-        <input type="checkbox" id="updateFlag" name="updateFlag"/>
+        <input type="hidden" id="updateFlagHidden" name="updateFlag" value="false"/>
+        <input type="checkbox" id="updateFlag" name="updateFlagCheckbox"
+               onclick="toggleCheckbox(this, 'updateFlagHidden')"/>
     </div>
     <div>
         <label for="deleteFlag">Delete Flag:</label>
-        <input type="checkbox" id="deleteFlag" name="deleteFlag"/>
+        <input type="hidden" id="deleteFlagHidden" name="deleteFlag" value="false"/>
+        <input type="checkbox" id="deleteFlag" name="deleteFlagCheckbox"
+               onclick="toggleCheckbox(this, 'deleteFlagHidden')"/>
     </div>
     <div>
         <label for="excludedColumns">동기화 제외 컬럼 (','로 구분):</label>
@@ -121,6 +128,12 @@
     </div>
     <button type="submit">Add Task</button>
 </form>
+
+<script>
+    function toggleCheckbox(checkbox, hiddenFieldId) {
+        document.getElementById(hiddenFieldId).value = checkbox.checked ? "true" : "false";
+    }
+</script>
 
 </body>
 </html>

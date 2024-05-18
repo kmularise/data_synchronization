@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.zaxxer.hikari.HikariConfig;
 
-import factory.integration.database.synchronizer.mapper.source.ColumnInfoMapper;
+import factory.integration.database.synchronizer.mapper.source.SourceColumnInfoMapper;
 import factory.integration.database.synchronizer.web.exception.BusinessException;
 import factory.integration.database.synchronizer.web.service.SourceTableInfoService;
 
@@ -22,15 +22,15 @@ import factory.integration.database.synchronizer.web.service.SourceTableInfoServ
 public class SourceTableInfoServiceTest {
 
 	private SourceTableInfoService sourceTableInfoService;
-	private ColumnInfoMapper columnInfoMapper;
+	private SourceColumnInfoMapper sourceColumnInfoMapper;
 
 	private HikariConfig sourceHikariConfig;
 
 	@BeforeEach
 	void init() {
-		columnInfoMapper = mock(ColumnInfoMapper.class);
+		sourceColumnInfoMapper = mock(SourceColumnInfoMapper.class);
 		sourceHikariConfig = mock(HikariConfig.class);
-		sourceTableInfoService = new SourceTableInfoService(columnInfoMapper, sourceHikariConfig);
+		sourceTableInfoService = new SourceTableInfoService(sourceColumnInfoMapper, sourceHikariConfig);
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class SourceTableInfoServiceTest {
 	void checkTableInvalid() {
 		String schema = "source_schema";
 		doReturn(schema).when(sourceHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("customer", "order", "car")).when(sourceColumnInfoMapper).selectAllTableNames(schema);
 		assertThrows(BusinessException.class, () -> sourceTableInfoService.checkTable("invalid_table_name"));
 	}
 
@@ -47,7 +47,7 @@ public class SourceTableInfoServiceTest {
 	void checkTableValid() {
 		String schema = "source_schema";
 		doReturn(schema).when(sourceHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("customer", "order", "car")).when(sourceColumnInfoMapper).selectAllTableNames(schema);
 		Assertions.assertDoesNotThrow(() -> sourceTableInfoService.checkTable("customer"));
 	}
 
@@ -57,8 +57,8 @@ public class SourceTableInfoServiceTest {
 		String tableName = "customer";
 		String schema = "source_schema";
 		doReturn(schema).when(sourceHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
-		doReturn(List.of("id", "name")).when(columnInfoMapper).selectColumnsByTable(tableName, schema);
+		doReturn(List.of("customer", "order", "car")).when(sourceColumnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("id", "name")).when(sourceColumnInfoMapper).selectColumnsByTable(tableName, schema);
 		assertEquals(List.of("id", "name"), sourceTableInfoService.getColumns(tableName));
 	}
 
@@ -68,7 +68,7 @@ public class SourceTableInfoServiceTest {
 		String tableName = "sample";
 		String schema = "source_schema";
 		doReturn(schema).when(sourceHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("customer", "order", "car")).when(sourceColumnInfoMapper).selectAllTableNames(schema);
 		assertThrows(BusinessException.class, () -> sourceTableInfoService.getColumns(tableName));
 	}
 
@@ -78,8 +78,8 @@ public class SourceTableInfoServiceTest {
 		String tableName = "customer";
 		String schema = "source_schema";
 		doReturn(schema).when(sourceHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
-		doReturn(List.of("id", "name")).when(columnInfoMapper).selectColumnsByTable(tableName, schema);
+		doReturn(List.of("customer", "order", "car")).when(sourceColumnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("id", "name")).when(sourceColumnInfoMapper).selectColumnsByTable(tableName, schema);
 		assertThrows(BusinessException.class,
 			() -> sourceTableInfoService.getIncludedColumns(tableName, List.of("invalid", "id")));
 	}
@@ -90,8 +90,8 @@ public class SourceTableInfoServiceTest {
 		String tableName = "customer";
 		String schema = "source_schema";
 		doReturn(schema).when(sourceHikariConfig).getSchema();
-		doReturn(List.of("customer", "order", "car")).when(columnInfoMapper).selectAllTableNames(schema);
-		doReturn(List.of("id", "name")).when(columnInfoMapper).selectColumnsByTable(tableName, schema);
+		doReturn(List.of("customer", "order", "car")).when(sourceColumnInfoMapper).selectAllTableNames(schema);
+		doReturn(List.of("id", "name")).when(sourceColumnInfoMapper).selectColumnsByTable(tableName, schema);
 		assertEquals(List.of("id"), sourceTableInfoService.getIncludedColumns(tableName, List.of("name")));
 	}
 }

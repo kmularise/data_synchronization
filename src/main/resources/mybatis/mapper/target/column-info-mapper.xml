@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="factory.integration.database.synchronizer.mapper.source.SourceColumnInfoMapper">
+<mapper namespace="factory.integration.database.synchronizer.mapper.target.TargetColumnInfoMapper">
     <select id="selectColumnsByTable" resultType="String">
         SELECT COLUMN_NAME
         FROM INFORMATION_SCHEMA.COLUMNS

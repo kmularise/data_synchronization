@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import factory.integration.database.synchronizer.mapper.source.ColumnInfoMapper;
 import factory.integration.database.synchronizer.mapper.source.SourceTableMapper;
 import factory.integration.database.synchronizer.mapper.target.TargetTableMapper;
 import factory.integration.database.synchronizer.scheduler.job.SyncTaskInfoRequest;
+import factory.integration.database.synchronizer.web.service.SourceTableInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,19 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SyncService {
 	private final SourceTableMapper sourceTableMapper;
-	private final ColumnInfoMapper columnInfoMapper;
 	private final TargetTableMapper targetTableMapper;
+	private final SourceTableInfoService sourceTableInfoService;
 
 	@Transactional(transactionManager = "distributedTransactionManager", rollbackFor = {Exception.class})
 	public void synchronize(SyncTaskInfoRequest syncTaskInfoRequest) {
-		List<String> tables = columnInfoMapper.selectAllTableNames("source_schema");
-		for (String table : tables) {
-			if (table.equals(syncTaskInfoRequest.getTableName())) {
-				synchronizeTable(syncTaskInfoRequest);
-				return;
-			}
-		}
-		throw new IllegalArgumentException("invalid table name");
+		sourceTableInfoService.checkTable(syncTaskInfoRequest.getTableName());
+		synchronizeTable(syncTaskInfoRequest);
 	}
 
 	private void synchronizeTable(SyncTaskInfoRequest syncTaskInfoRequest) {
@@ -38,7 +32,8 @@ public class SyncService {
 		String temporaryTable = getTemporaryTable(tableName);
 		targetTableMapper.deleteAll(temporaryTable);
 		List<Map<String, Object>> rows = sourceTableMapper.selectAllFromTable(tableName);
-		List<String> columnNames = columnInfoMapper.selectColumnsByTable(tableName, "source_schema");
+		List<String> columnNames = sourceTableInfoService.getIncludedColumns(tableName,
+			syncTaskInfoRequest.getExcludedColumns());
 		if (rows != null && !rows.isEmpty()) {
 			targetTableMapper.insertAll(temporaryTable, rows);
 		}
