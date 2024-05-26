@@ -73,7 +73,7 @@ docker compose up -d
 ```
 
 3. source DB 컨테이너와 target DB 컨테이너에서 각각 source_schema와 target_schema를 만들고, sql/schema에 있는 sql 스크립트 파일 중
-   source_tables.sql, scheduler_tables.sql은 source_schema 안에서 테이블을 만들고 target_tables.sql, temporary_target_tables.sql
+   source_tables.sql, scheduler_tables.sql은 source_schema 안에서 테이블을 만들고 target_tables.sql, temporary_target_tables.sql은 target_schema 안에서 테이블을 만들게 됩니다.
 
 ### 설정 파일 추가
 
